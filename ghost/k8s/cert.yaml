@@ -1,0 +1,38 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-production
+  namespace: ghost
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: <your-email>
+
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-production
+
+    # ACME DNS-01 provider configurations
+    solvers:
+      - selector:
+          dnsNames:
+            - bashmyshell.com
+            - www.bashmyshell.com
+        dns01:
+          digitalocean:
+            tokenSecretRef:
+              name: digitalocean-dns
+              key: access-token
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bashmyshell-com
+  namespace: ghost
+spec:
+  secretName: bashmyshell-com-tls
+  issuerRef:
+    name: letsencrypt-production
+  dnsNames:
+    - bashmyshell.com
+    - www.bashmyshell.com

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ghost
+  namespace: ghost
+data:
+  url: http://www.bashmyshell.com
+  database__client: mysql
+  database__connection__host: <db-host>
+  database__connection__port: '3306'
+  database__connection__database: ghost

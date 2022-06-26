@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - config.yaml
+  - service.yaml
+  - ingress.yaml
+  - volume.yaml
+  - cert.yaml
+
+generatorOptions:
+    disableNameSuffixHash: true
+    labels:
+      app: ghost
+
+secretGenerator:
+  - name: ghost
+    namespace: ghost
+    envs:
+      - ghost-secret.txt
+  - name: digitalocean-dns
+    namespace: ghost
+    envs:
+      - do-access-token.txt
